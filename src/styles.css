@@ -1,0 +1,440 @@
+/* You can add global styles to this file, and also import other style files */
+@import "~@ng-select/ng-select/themes/default.theme.css";
+
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/*------------------
+    TYPOGRAPHY
+------------------*/
+.text-blue {
+    color: #00AEED;
+}
+
+body {
+    background: url(assets/tool-backgruond.png) repeat center center;
+    background-size: cover;
+    font-family: 'Roboto Condensed', sans-serif;
+
+}
+
+body {
+    font-size: 1vw !important;
+}
+
+h1 {
+    font-size: 2vw !important;
+    /* font size is 4% of the viewport's width */
+}
+
+h3 {
+    font-size: 2.2vw !important;
+}
+
+.dashboardContainer {
+    /* width: 100%;
+    height: 100vh;
+    overflow: hidden; */
+    /* position: relative; */
+    margin-bottom: 2rem;
+}
+
+.toolsImg {
+    position: absolute;
+    right: -10px;
+    bottom: -14%;
+    width: 35%;
+}
+
+.toolsImg img {
+    max-width: 100%;
+}
+
+.pageTitle {
+    font-size: 60px;
+    text-align: center;
+    margin: 20px 0;
+    color: #EDB200;
+    text-shadow: 1px 1px 1px rgba(0, 0, 0, 0.5);
+}
+
+.contentArea,
+.innerContentArea {
+    width: 55%;
+    margin-left: 5%;
+    height: 80vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* .innerContentArea {
+    width: 100%;
+    margin-left: 0;
+    height: 100%;
+} */
+
+.buttonsGroup {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+
+}
+
+.btn-custom {
+    border-radius: 10px;
+    padding: 20px 30px;
+    margin: 20px;
+    font-family: 'Roboto Condensed', sans-serif;
+    font-weight: 700;
+    font-size: 20px;
+    flex-direction: row;
+    border: none;
+    color: #fff;
+    text-transform: uppercase;
+    text-shadow: 0px 1px 1px rgba(0, 0, 0, 0.5);
+    cursor: pointer;
+    min-width: 250px;
+    display: block;
+    text-align: center;
+    text-decoration: none;
+}
+
+.btn-yellow {
+    background-color: #EDB200;
+}
+
+.btn-yellow:hover {
+    background-color: #d9a403;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-yellow:focus,
+.btn-yellow:active {
+    background-color: #d9a403 !important;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+
+.btn-blue {
+    background-color: #00AEED;
+}
+
+.btn-black {
+    background-color: #171A1F;
+}
+
+.text-center {
+    text-align: center;
+}
+
+.text-uppercase {
+    text-transform: uppercase;
+}
+
+.form-label {
+    font-size: 24px;
+    font-weight: 700;
+}
+
+app-login {
+    min-width: 400px;
+    align-self: start;
+}
+
+.form-control {
+    height: 50px;
+}
+
+.resultContainer {
+    max-height: 600px;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+.backButtonContainer {
+    position: absolute;
+    top: 40px;
+    left: 70px;
+}
+
+.backButton {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+}
+
+.userProfile {
+    position: absolute;
+    right: 70px;
+    top: 40px;
+}
+
+.user {
+    width: 50px;
+    height: 50px;
+    border: 1px solid rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    text-align: center;
+    line-height: 50px;
+}
+
+.multiSelectField .dropdown {
+    display: block !important;
+}
+
+.multiSelectField .dropdown .btn {
+    width: 100%;
+    text-align: left;
+    height: 50px;
+    background-color: white;
+    color: #000;
+    border-color: rgb(222, 226, 230);
+}
+
+.multiSelectField .dropdown-toggle::after {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+}
+
+.multiSelectField .dropdown-menu {
+    width: 100%;
+}
+
+.multiSelectField .dropdown-menu .dropdown-item {
+    border-bottom: 1px solid rgba(0, 0, 0, 0.1) !important;
+    padding: 10px;
+}
+
+.multiSelectField .dropdown-menu .dropdown-item:last-child {
+    border-bottom: 0 !important;
+}
+
+.multiSelectField .dropdown-menu .dropdown-item span[role="menuitem"] {
+    display: flex;
+    align-items: center;
+}
+
+.multiSelectField .dropdown-menu .dropdown-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    margin-right: 10px;
+}
+
+.multiSelectField .dropdown-menu .dropdown-item.active {
+    background-color: #f1f1f1;
+    color: #000;
+
+}
+
+.multiSelectField .dropdown-menu .dropdown-item:focus,
+.multiSelectField .dropdown-menu .dropdown-item:active {
+    background-color: #f1f1f1;
+    color: #000;
+}
+
+.input-grp .input-btn {
+    position: absolute;
+    right: 2px;
+    top: 2px;
+    width: 48px;
+    height: 46px;
+}
+
+.input-grp .input-btn button {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    background-color: transparent;
+    border-radius: 5px;
+}
+
+.input-grp .input-btn button:focus,
+.input-grp .input-btn button:active {
+    background-color: #f1f1f1;
+}
+
+.fileField input[type="file"] {
+    opacity: 0;
+    width: 100%;
+}
+
+.fileField.input-grp .input-btn {
+    pointer-events: none;
+}
+
+.fileName {
+    position: absolute;
+    top: 12px;
+    left: 10px;
+    right: 50px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+html,
+body {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    font-family: Roboto, "Helvetica Neue", sans-serif;
+}
+
+.dateRangePicker .mat-mdc-form-field {
+    display: block;
+}
+
+.dateRangePicker .mat-mdc-text-field-wrapper {
+    width: 100%;
+    background: #fff !important;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    border-radius: 5px;
+}
+
+.dateRangePicker .mdc-text-field__input,
+.dateRangePicker .mat-date-range-input-separator {
+    color: rgba(0, 0, 0, 0.1);
+}
+
+.dateRangePicker .mat-mdc-select-value {
+    color: #000;
+}
+
+.dateRangePicker .mat-mdc-form-field-flex {
+    height: 50px;
+}
+
+.dateRangePicker .mdc-text-field--filled .mdc-line-ripple::after {
+    border-bottom-color: transparent;
+}
+
+.dateRangePicker .mat-mdc-icon-button.mat-mdc-button-base,
+.dateRangePicker .mdc-text-field:not(.mdc-text-field--disabled) .mdc-text-field__input {
+    color: rgba(0, 0, 0, 0.5);
+}
+
+.mat-calendar-body-selected {
+    background-color: #EDB200;
+}
+
+.mat-calendar-body-in-range::before,
+.mat-calendar-body-cell:not(.mat-calendar-body-disabled):hover>.mat-calendar-body-cell-content:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical),
+.mat-calendar-body-today:not(.mat-calendar-body-selected):not(.mat-calendar-body-comparison-identical) {
+    background: rgba(237, 178, 0, .2)
+}
+
+.input-grp .ng-select .ng-select-container {
+    width: 98%;
+    border: none;
+}
+
+.ng-select .ng-select-container:hover {
+    box-shadow: none;
+}
+
+
+
+
+.t_code_search {
+    padding: 6px 0;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+
+.mat-mdc-option .mdc-list-item__primary-text {
+    color: #000;
+}
+
+.mdc-menu-surface.mat-mdc-select-panel {
+    background-color: #fff;
+}
+
+
+
+
+
+
+/* Pagination  */
+
+.mat-mdc-paginator {
+    background: #ffffff!important;
+    color: rgb(0 0 0 / 87%)!important;
+    border: 1px solid #ccc;
+}
+
+.mat-mdc-select-value-text {
+    color: rgb(0, 0, 0);
+
+}
+
+.mat-mdc-select-arrow svg {
+    color: black;
+}
+
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple {
+    /* border: 1px solid #ccc; */
+
+    border-radius: 50%;
+}
+
+.mat-mdc-icon-button .mat-mdc-button-persistent-ripple::before {
+    content: "";
+    opacity: 1;
+    background: green !important;
+
+}
+
+.mat-mdc-paginator-icon {
+    fill: rgba(0, 0, 0);
+}
+
+.mat-mdc-icon-button[disabled] .mat-mdc-paginator-icon {
+    fill: rgba(44, 42, 42, 0.12);
+}
+
+
+
+
+
+.mat-mdc-optgroup-label .mdc-list-item__primary-text {
+    color: black!important;
+}
+
+
+.mat-mdc-optgroup-label .mdc-list-item__primary-text {
+    padding: 5px;
+    width: 100%;
+    background: #ccc;
+    display: block;
+    color: rgb(0, 0, 0)!important;
+}
+
+.mat-primary .mat-mdc-option.mdc-list-item--selected:not(.mdc-list-item--disabled) .mdc-list-item__primary-text {
+    border-radius: 5px!important;
+    color: var(--mdc-theme-primary, #00AEED);
+}
+
+.mat-primary .mat-pseudo-checkbox-checked.mat-pseudo-checkbox-full, .mat-primary .mat-pseudo-checkbox-indeterminate.mat-pseudo-checkbox-full {
+    background: #00AEED;
+    color:white;
+}
+
+
+
+
+
+
+
+.mat-mdc-option .mdc-list-item__primary-text {
+    font-weight: 700!important;
+
+}

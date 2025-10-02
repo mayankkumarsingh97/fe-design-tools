@@ -1,0 +1,75 @@
+<!-- <div class="userProfile d-flex align-items-center">
+    <div class="user me-1 fs-5 fw-bold">
+        {{userData[0].name.slice(0,1) }}
+    </div>
+    <div class="userType">
+        <div class="dropdown">
+            <button class="btn dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{userData[0].name }}
+            </button>
+            <ul class="dropdown-menu">
+                <li><a class="dropdown-item" routerLink="">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div> -->
+
+<div class="userProfile d-flex align-items-center">
+  <div *ngIf="userData" class="user me-1 fs-5 fw-bold">
+      {{userData[0].name.slice(0,1)}}
+  </div>
+
+  <div *ngIf="!userData" class="user me-1 fs-5 fw-bold">
+      G
+  </div>
+
+
+  <div class="userType" ngbDropdown>
+      <div class="dropdown " ngbDropdownToggle>
+
+          <button *ngIf="!userData" class="btn dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              Hello, <b>Guest</b>
+          </button>
+
+
+          <button *ngIf="userData" class="btn" type="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              {{userData[0].name}}
+          </button>
+
+
+          <ul class="dropdown-menu" ngbDropdownMenu>
+              <li><a class="dropdown-item" *ngIf="!userData" routerLink="/login">Login as Admin</a></li>
+              <li><a class="dropdown-item" *ngIf="userData" routerLink="/admin-dashboard">Dashboard</a></li>
+              <li><a class="dropdown-item" *ngIf="userData" routerLink="/newtcode">Add new TCode</a></li>
+              <li><a class="dropdown-item" *ngIf="userData" (click)="_make_LocalStorage_empty()"
+                      routerLink="">Logout</a></li>
+
+          </ul>
+      </div>
+  </div>
+</div>
+
+
+
+
+
+<div class="toolsImg">
+    <img src="../../assets/Tool-img.png" alt="">
+</div>
+<div class="contentArea">
+    <div class="innerContentArea">
+        <div class="buttonsGroup">
+            <a class="btn-custom btn-black" routerLink="/newtcode">
+                New T - code
+            </a>
+            <a class="btn-custom btn-blue" routerLink="/existingtcode">
+                Existing T - code
+            </a>
+        </div>
+        <a class="btn-custom btn-yellow" routerLink="/tooldrawingsummary">
+            Summary
+        </a>
+    </div>
+</div>

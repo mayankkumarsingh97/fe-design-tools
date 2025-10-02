@@ -1,0 +1,26 @@
+<div class="backButtonContainer">
+
+</div>
+<div class="toolsImg">
+    <img src="../../assets/Tool-img.png" alt="">
+</div>
+
+<div class="contentArea align-items-start">
+    <div class="loginContainer w-50">
+        <form [formGroup]="loginForm" (ngSubmit)="loginUser()">
+            <div class="mb-0">
+                <label for="exampleInputEmail1" class="form-label text-blue">Phone</label>
+                <input type="phone" class="form-control" placeholder="Ex. 9988998877" id="exampleInputEmail1"
+                    aria-describedby="emailHelp" formControlName="phone_number">
+            </div>
+            <div [ngStyle]="errBgColor" *ngIf="phone_number && phone_number.invalid && phone_number.touched">
+                Please enter valid phone number!
+            </div>
+
+            <div class="d-flex justify-content-between align-items-center mt-4">
+                <input [disabled]="loginForm.invalid" type="submit" value="Send OTP"
+                    class="btn btn-yellow px-4 py-2 fw-bold fs-5 resendTimer">
+            </div>
+        </form>
+    </div>
+</div>

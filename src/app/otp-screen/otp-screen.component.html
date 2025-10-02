@@ -1,0 +1,57 @@
+<div class="toolsImg">
+    <img src="../../assets/Tool-img.png" alt="">
+</div>
+<div class="contentArea align-items-start">
+    <div class="loginContainer">
+        <form action="" [formGroup]="otpForm" (ngSubmit)="verifyOTP()">
+            <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label text-blue">Enter OTP</label>
+                <div class="col-md-10">
+                    <div class="row">
+                        <div class="col-md-2">
+                            <input id="opt1" type="text" class="form-control text-center otp_bg" maxlength="1"
+                                formControlName="otp_digit_1" (input)="onInput($event,'otp-2')">
+                        </div>
+                        <div class="col-md-2">
+                            <input id="otp-2" type="text" class="form-control text-center otp_bg" maxlength="1"
+                                formControlName="otp_digit_2" (input)="onInput($event,'otp-3')">
+                        </div>
+                        <div class="col-md-2">
+                            <input id="otp-3" type="text" class="form-control text-center otp_bg" maxlength="1"
+                                formControlName="otp_digit_3" (input)="onInput($event,'otp-4')">
+                        </div>
+                        <div class="col-md-2">
+                            <input id="otp-4" type="text" class="form-control text-center otp_bg" maxlength="1"
+                                formControlName="otp_digit_4" (input)="onInput($event,'otp-5')">
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            <div [ngStyle]="errBgColor" *ngIf="otp_digit_1 && otp_digit_1.invalid && otp_digit_1.touched">Please enter
+                OTP
+            </div>
+
+
+            <div class="d-flex justify-content-between align-items-center">
+                <button type="submit" [disabled]="otpForm.invalid"
+                    class="btn btn-yellow px-4 py-2 fw-bold fs-5 resendTimer mt-4">Verify
+                    OTP</button>
+
+                <div *ngIf="timer>0">
+                    <button type="reset" [disabled]="timer>0"
+                        class="btn btn-yellow px-4 py-2 fw-bold fs-5 resendTimer mt-4" (click)="resendOtp()">Resend OTP
+                        in {{timer}} sec</button>
+                </div>
+
+
+                <div *ngIf="timer==0">
+                    <button type="button" class="btn btn-yellow px-4 py-2 fw-bold fs-5 mt-4"
+                        (click)="resendOtp()">Resend OTP</button>
+                </div>
+            </div>
+        </form>
+
+    </div>
+</div>

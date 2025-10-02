@@ -1,0 +1,407 @@
+<mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+<div class="overlay" *ngIf="progressBar">
+</div>
+<div class="userProfile d-flex align-items-center">
+    <div *ngIf="userData" class="user me-1 fs-5 fw-bold">
+        {{userData[0].name.slice(0,1)}}
+    </div>
+    <div *ngIf="!userData" class="user me-1 fs-5 fw-bold">
+        G
+    </div>
+    <div class="userType" ngbDropdown>
+        <div class="dropdown " ngbDropdownToggle>
+            <button *ngIf="!userData" class="btn dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Hello, <b>Guest</b>
+            </button>
+
+            <button *ngIf="userData" class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{userData[0].name}}
+            </button>
+
+            <ul class="dropdown-menu" ngbDropdownMenu>
+                <li><a class="dropdown-item" *ngIf="!userData" routerLink="/login">Login as Admin</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/admin-dashboard">Dashboard</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/newtcode">Add new TCode</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" (click)="_make_LocalStorage_empty()"
+                        routerLink="">Logout</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+<h1 class="text-center text-uppercase fw-bold">UPDATE T-CODE</h1>
+<div class="container mt-3">
+    <div class="d-flex">
+        <button class="btn btn-custom btn-info p-2 text-white m-2 bg-blue" routerLink="/newtcode">Add New T
+            Code</button>
+        <button class="btn btn-custom btn-yellow p-2 text-white m-2" routerLink="/tooldrawingsummary">Summary</button>
+        <button class="btn btn-custom btn-primary p-2 text-white m-2" routerLink="/admin-dashboard">Dashboard</button>
+    </div>
+</div>
+<div class="container mt-3">
+    <form [formGroup]="editTCodeForm" (ngSubmit)="editTCodeFormFunc()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="">
+                    <label for="selectAggregate" class="form-label text-blue">Select Aggregate
+                    </label>
+                    <div class="dateRangePicker">
+                        <div class="multiSelectField">
+                            <mat-form-field>
+                                <mat-select placeholder="Select Aggregate" [formControl]="aggregatorControl"
+                                    formControlName="agg" multiple>
+                                    <mat-optgroup *ngFor="let group of plantAggGroups" [label]="group.name"
+                                        [disabled]="group.disabled">
+                                        <mat-option *ngFor="let aggregator of group.agg" [value]="aggregator.value">
+                                            {{aggregator.viewValue}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div *ngIf="selectedProfile">{{selectedProfile.value}}</div> -->
+                        <!-- <div>selectedProfile</div> -->
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Update T-Code/ Description
+
+                    </label>
+                    <div class="input-grp position-relative t_code_search">
+                        <ng-select bindLabel="description" class="searchable_select" (keyup)="searchTcodeApiFn($event)"
+                            (change)="searchTcodesetValue($event)" formControlName="selection"
+                            placeholder="Please T-Code/ Description for Search">
+                            <ng-option *ngFor="let item of tcode_json" [value]="item" name="">
+                                {{ item.tcode + ' (' + item.desc + ')' }}
+                            </ng-option>
+                        </ng-select>
+
+                        <div class="input-btn bg-white border-left-0 mb-1">
+                            <button>
+                                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Description</label>
+                    <textarea readonly disabled name="" id="" cols="30" rows="8"
+                        class="form-control h-auto">{{description}}</textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label for="selectAggregate" class="form-label text-blue">Upload PDF</label>
+                            <div class="input-grp form-control fileField position-relative d-flex">
+                                <input type="file" (change)="onFileSelected($event, 0,'pdf')"
+                                    formControlName="upload_pdf_file" id="_update_pdf_id">
+                                <label class="fileName">{{ fileNames[0] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+
+                                <div *ngIf="_take_desi_pdf" class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"><img style="width: 20px;"
+                                                    src="../../assets/upload.png" alt=""> <label
+                                                    for="_update_pdf_id">&nbsp; Update pdf</label></a>
+                                        </li>
+                                        <li (click)="_callForHistoryFn('pdf')"><a class="dropdown-item"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                                                    style="width: 20px;" src="../../assets/file_log.png" alt=""> File
+                                                upload log
+                                            </a></li>
+                                    </ul>
+                                </div>
+
+
+
+                            </div>
+
+
+
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label for="selectAggregate" class="form-label text-blue">Upload DWG.</label>
+                            <div class="input-grp form-control fileField position-relative d-flex">
+                                <input type="file" (change)="onFileSelected($event, 1,'dwg')"
+                                    formControlName="upload_dwg_file" id="_dwg_upload">
+                                <label class="fileName">{{ fileNames[1] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+                                <div *ngIf="_take_desi_dwg" class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"><label for="_dwg_upload"><img style="width: 20px;"
+                                                        src="../../assets/upload.png" alt=""> Update dwg</label></a>
+                                        </li>
+
+                                        <li (click)="_callForHistoryFn('dwg')"><a class="dropdown-item"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                                                    style="width: 20px;" src="../../assets/file_log.png" alt=""> File
+                                                upload log
+                                            </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+
+                            <div class="modal fade" id="staticBackdrop" data-bs-backdrop="static"
+                                data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel"
+                                aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h1 class="modal-title fs-5" id="staticBackdropLabel"><img
+                                                    style="width: 30px;" src="../../assets/file_log.png" alt="">&nbsp;
+                                                File
+                                                upload log</h1>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <ul *ngFor="let item of _array_History;let i=index" class="p-0 m-0">
+                                                <div [ngClass]="{'_make_disable_del_file ': item.deleted}">
+                                                    <div
+                                                        class="d-flex justify-content-around w-100 _main_container align-items-center my-2 p-2">
+                                                        <div class="version">V{{item.version}}</div>
+                                                        <div class="" style="width: 70%;">
+                                                            <a href="{{HOST}}/api/tools/file/{{item.file_id}}"
+                                                                class="m-1" target="_blank">
+                                                                {{item.file_name}}
+                                                            </a>
+                                                        </div>
+
+                                                        <div class="">
+                                                            <div class="filetype">
+
+                                                                <div *ngIf="item.entity=='dwg'">
+                                                                    <div class="w-50">
+                                                                        <i *ngIf="i==0"
+                                                                            class="fa fa-trash text-danger d-block cursor-pointer m-2"
+                                                                            (click)="_del_file(item.file_id)"></i>
+
+                                                                        <a href="{{HOST}}/api/tools/file/{{item.file_id}}"
+                                                                            target="_blank">
+                                                                            <img src="../../assets/history_icons/pencil-paintbrush.png"
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                                <div *ngIf="item.entity=='pdf'">
+                                                                    <div
+                                                                        class="w-50 d-flex justify-content-between align-items-center">
+                                                                        <i *ngIf="i==0"
+                                                                            class="fa fa-trash text-danger d-block cursor-pointer m-2"
+                                                                            (click)="_del_file(item.file_id)"></i>
+
+                                                                        <a href="{{HOST}}/api/tools/file/{{item.file_id}}"
+                                                                            target="_blank">
+                                                                            <img src="../../assets/history_icons/file-pdf.png"
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+
+                                                                </div>
+
+                                                                <div *ngIf="item.entity=='3D'">
+                                                                    <div
+                                                                        class="w-50 d-flex justify-content-between align-items-center">
+                                                                        <i *ngIf="i==0"
+                                                                            class="fa fa-trash text-danger d-block cursor-pointer m-2"
+                                                                            (click)="_del_file(item.file_id)"></i>
+
+                                                                        <a href="{{HOST}}/api/tools/file/{{item.file_id}}"
+                                                                            target="_blank">
+                                                                            <img src="../../assets/history_icons/cubes.png"
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+
+
+                                                                </div>
+
+                                                                <div *ngIf="item.entity==='tools_photo'"
+                                                                    class="d-flex justify-content-between align-items-center">
+
+                                                                    <div
+                                                                        class="w-50 d-flex justify-content-between align-items-center">
+                                                                        <i *ngIf="i==0"
+                                                                            class="fa fa-trash text-danger d-block  cursor-pointer m-2"
+                                                                            (click)="_del_file(item.file_id)"></i>
+
+
+                                                                        <a href="{{HOST}}/api/tools/file/{{item.file_id}}"
+                                                                            class="m-2" target="_blank">
+                                                                            <img src="../../assets/history_icons/graphic-style.png"
+                                                                                alt="">
+                                                                        </a>
+                                                                    </div>
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+
+
+
+                                            </ul>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary"
+                                                data-bs-dismiss="modal">Close</button>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-1">
+                            <label for="selectAggregate" class="form-label text-blue">Upload 3D.</label>
+                            <div class="input-grp form-control fileField position-relative d-flex">
+                                <input type="file" (change)="onFileSelected($event, 2,'3D')"
+                                    formControlName="upload_3d_file" id="update_3d_id">
+                                <label class="fileName">{{ fileNames[2] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+
+
+                                <div *ngIf="_take_desi_3d" class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+
+                                    </a>
+
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"><label for="update_3d_id"><img style="width: 20px;"
+                                                        src="../../assets/upload.png" alt=""> Update 3D</label></a>
+                                        </li>
+                                        <!-- <li><a class="dropdown-item">Download</a></li> -->
+                                        <li (click)="_callForHistoryFn('3D')"><a class="dropdown-item"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"> <img
+                                                    style="width: 20px;" src="../../assets/file_log.png" alt=""> File
+                                                upload log
+                                            </a></li>
+                                    </ul>
+                                </div>
+                            </div>
+
+
+                            <!-- <div class="progress mt-1">
+                                <div class="progress-bar" role="progressbar" [style.width.%]="progress[2]"
+                                    [attr.aria-valuenow]="progress[2]" aria-valuemin="0" aria-valuemax="100">{{
+                                    progress[2] }}%</div>
+                            </div> -->
+                            <!-- <div  style="color: red;">*Required</div> -->
+                            <!-- <div class="img_height_class mt-1">
+                                <img src="https://images.pexels.com/photos/15109908/pexels-photo-15109908/free-photo-of-photograph-of-a-high-brown-fritillary-on-white-flowers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                    alt="pdf_img">
+                            </div> -->
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-1">
+                            <label for="selectAggregate" class="form-label text-blue">Tool Photograph</label>
+                            <div class="input-grp form-control fileField position-relative d-flex">
+                                <input type="file" (change)="onFileSelected($event, 3,'tools_photo')" id=""
+                                    formControlName="upload_too_pic" id="_upload_toolpic_id">
+                                <label class="fileName">{{ fileNames[3] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+
+                                </div>
+
+                                <div *ngIf="_take_desi_photo" class="dropdown">
+                                    <a class="btn btn-secondary dropdown-toggle" href="#" role="button"
+                                        data-bs-toggle="dropdown" aria-expanded="false">
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item"><label for="_upload_toolpic_id"><img
+                                                        style="width: 20px;" src="../../assets/upload.png" alt="">
+                                                    Update Tool
+                                                    Photograph</label></a></li>
+                                        <li (click)="_callForHistoryFn('tools_photo')"><a class="dropdown-item"
+                                                data-bs-toggle="modal" data-bs-target="#staticBackdrop"><img
+                                                    style="width: 20px;" src="../../assets/file_log.png" alt=""> File
+                                                upload log
+                                            </a></li>
+                                    </ul>
+                                </div>
+
+                            </div>
+                            <!-- <div class="progress mt-1">
+                                <div class="progress-bar" role="progressbar" [style.width.%]="progress[3]"
+                                    [attr.aria-valuenow]="progress[3]" aria-valuemin="0" aria-valuemax="100">{{
+                                    progress[3] }}%</div>
+                            </div> -->
+                            <!-- <div  style="color: red;">*Required</div> -->
+                            <!-- <div class="img_height_class mt-1">
+                                <img src="https://images.pexels.com/photos/15109908/pexels-photo-15109908/free-photo-of-photograph-of-a-high-brown-fritillary-on-white-flowers.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1"
+                                    alt="pdf_img">
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-3 mb-5">
+            <div class="col-md-4 text-center justify-content-between mx-auto d-flex">
+                <!-- <button class="btn btn-success btn-lg px-5 text-uppercase py-2 fw-bold">
+                    Upload
+                </button> -->
+                <input type="submit" value="Update" class="btn btn-success btn-lg px-5 text-uppercase py-2 fw-bold">
+                <!--<button class="btn btn-success btn-lg px-5 text-uppercase py-2 fw-bold" type="submit">
+                    update
+                </button>-->
+                <button type="reset" (click)="goBackToPrevPage()"
+                    class="btn btn-danger btn-lg px-5 text-uppercase py-2 fw-bold">
+                    Exit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

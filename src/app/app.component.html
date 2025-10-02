@@ -1,0 +1,8 @@
+<app-header></app-header>
+<div class="dashboardContainer">
+    <h3 class="pageTitle fw-bold">{{pageTitle}}</h3>
+    <h1 class="text-center text-uppercase fw-bold" *ngIf="hasRoute('login')">Admin</h1>
+    <div class="w-100">
+        <router-outlet></router-outlet>
+    </div>
+</div>

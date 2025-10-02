@@ -1,0 +1,14 @@
+.otp_bg{
+    background-color: #DBA400;
+}
+
+.loginContainer{
+    width: 500px;
+}
+
+.resendTimer:disabled{
+    background-color: #b1acac;
+    border: none;
+    color: #000 !important;
+    /* box-shadow: 5px 5px 4px #ccc; */
+}
