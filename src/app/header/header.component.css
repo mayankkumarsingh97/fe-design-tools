@@ -1,0 +1,9 @@
+.es_logo {
+    left: 180px;
+}
+
+@media (max-width:1024px) {
+    .es_logo {
+        left: 50px;
+    }
+}

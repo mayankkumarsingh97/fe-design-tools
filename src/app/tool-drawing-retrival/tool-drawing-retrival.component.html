@@ -1,0 +1,234 @@
+<div class="backButtonContainer">
+    <!-- <button class="backButton" (click)="goBackToPrevPage()">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button> -->
+</div>
+
+<div class="userProfile d-flex align-items-center">
+    <div *ngIf="userData" class="user me-1 fs-5 fw-bold">
+        {{userData[0].name.slice(0,1)}}
+    </div>
+
+    <div *ngIf="!userData" class="user me-1 fs-5 fw-bold">
+        G
+    </div>
+
+
+    <div class="userType" ngbDropdown>
+        <div class="dropdown " ngbDropdownToggle>
+
+            <button *ngIf="!userData" class="btn  border" type="button" aria-expanded="false">
+                Hello, <b>Guest</b>
+            </button>
+
+
+            <button *ngIf="userData" class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{userData[0].name}}
+            </button>
+
+
+            <ul class="dropdown-menu" ngbDropdownMenu>
+                <li><a class="dropdown-item" *ngIf="!userData" routerLink="/login">Login as Admin</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/admin-dashboard">Dashboard</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/newtcode">Add new TCode</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" (click)="_make_LocalStorage_empty()"
+                        routerLink="">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+<h1 class="text-center text-uppercase fw-bold">Tool Drawing Finder</h1>
+
+<div class="container mt-4">
+    <form action="">
+        <div class="row align-items-center justify-content-between">
+            <div class="col-md-12">
+                <div class="mb-2">
+                    <label for="selectAggregate" class="form-label text-blue">Enter T-Code/ Description</label>
+                    <div class="input-grp position-relative t_code_search" style="border-radius: 5px;">
+                        <ng-select bindLabel="description" class="searchable_select " (input)="search($event)"
+                            ngModel="selection" (change)="searchTcodesetValue($event)" placeholder="Enter t code">
+                            <ng-option *ngFor="let item of tcode_json" [value]="item" name="">
+                                {{ item.tcode + item.value }}
+                            </ng-option>
+                        </ng-select>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-8">
+                <div class="mb-0">
+                    <label for="selectAggregate" class="form-label text-blue">Aggregate </label>
+                    <div class="dateRangePicker">
+                        <!-- <mat-form-field class="w-100">
+                            <mat-label class="text-black">Select AGG.</mat-label>
+                            <mat-select [(value)]="selectedAggregates" (selectionChange)="GetSelectedDivision($event)">
+                                <mat-option *ngFor="let item of aggregates"
+                                    [value]="item.aggregate_id">{{item.aggregate_name}}</mat-option>
+                            </mat-select>
+                        </mat-form-field> -->
+
+                        <mat-form-field>
+                            <mat-label>Select Aggregate
+                            </mat-label>
+                            <mat-select [formControl]="pokemonControl" multiple
+                                (selectionChange)="GetSelectedDivision($event)">
+                                <!-- <mat-option>-- None --</mat-option> -->
+                                <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name">
+                                    <mat-option *ngFor="let pokemon of group.agg" [value]="pokemon.value">
+                                        {{pokemon.viewValue}}
+                                    </mat-option>
+                                </mat-optgroup>
+                            </mat-select>
+                        </mat-form-field>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-md-4 mt-3">
+                <button (click)="toolRetrivalFilter()"
+                    class="btn btn-info btn-lg px-5 text-uppercase  fw-bold w-100">Search <img
+                        src="../../assets/settings.png" width="20" alt=""></button>
+
+            </div>
+
+            <!-- <button mat-raised-button color="primary">Primary</button> -->
+            <!-- <div class="col-md-4">
+                <button (click)="exportToPdf()"
+                    class="btn btn-success btn-lg px-5 text-uppercase py-2 fw-bold w-100 text-white">
+                    Export to execl
+                </button>
+            </div> -->
+        </div>
+
+        <!-- <div class="h-75 w-100 d-flex justify-content-center align-items-center">
+        <mat-spinner *ngIf="_loading" class="bg-blue"></mat-spinner>
+      </div> -->
+
+        <div class="resultContainer retrival_min_height">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="_not_found" class="_no_data_errmsg">No Data found! &nbsp; <img
+                            src="../../assets/page-not-found.png" width="80" alt=""> </div>
+                    <!-- <div *ngIf="!_no_data;" class="_no_data_errmsg">Please select the selection Criteria.</div> -->
+                    <table *ngIf="_no_data" class="table table-bordered table-striped text-center ">
+                        <thead class="bg-dark text-white text-center">
+                            <tr>
+                                <th class="text-blue">S.No</th>
+                                <th>Aggregate</th>
+                                <th>T-Code</th>
+                                <th>Tool Description</th>
+                                <th>.PDF</th>
+                                <th>.DRW</th>
+                                <th>3D</th>
+                                <th>Tool Photo</th>
+                                <!-- <th>Action</th> -->
+                            </tr>
+                        </thead>
+
+                        <tbody *ngFor="let data of all_data_fst_t ;let i=index">
+
+                            <tr>
+                                <!-- <div>{{data.ekl_plant_o}}</div> -->
+                                <!-- <td rowspan="5" vAlign="middle" class="fw-bold">
+                                   {{data.ekl_plant}}
+                                    </td> -->
+                                <!-- <td >{{ye}}</td> -->
+
+                                <td rowspan="5" vAlign="middle" class="fw-bold">
+                                    <b>{{(((currentPageIndex - 1) * pageSize) + (i+1))}}</b>
+                                </td>
+
+                                <td vAlign="middle" class="fw-bold">{{data.ekl_division}}</td>
+                                <td vAlign="middle" class="fw-bold">{{data.item_code}}</td>
+                                <td vAlign="middle" style="width: 300px;" class="fw-bold">{{data.item_description}}
+                                </td>
+
+                                <td vAlign="middle">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_pdf}}">
+                                        <i *ngIf="data.file_pdf > 0"
+                                            class="fa-solid fa-circle-down  text-success h3 mb-0"
+                                            (click)="callForPic(data.file_pdf,'pdf')">
+                                        </i>
+                                    </a>
+
+                                    <i *ngIf="data.file_pdf == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0">
+                                    </i>
+                                </td>
+
+                                <td vAlign="middle">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_dwg}}">
+                                        <i *ngIf="data.file_dwg > 0"
+                                            class="fa-solid fa-circle-down  text-success h3 mb-0"
+                                            (click)="callForPic(data.file_dwg,'dwg')">
+                                        </i>
+                                    </a>
+
+
+                                    <i *ngIf="data.file_dwg == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0"></i>
+                                </td>
+
+                                <td vAlign="middle">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_3d}}">
+                                        <i *ngIf="data.file_3d > 0"
+                                            class="fa-sharp fa-solid fa-circle-down  text-success h3 mb-0"
+                                            (click)="callForPic(data.file_3d,'3d')"></i>
+                                    </a>
+
+                                    <i *ngIf="data.file_3d == 0" class="fa-solid fa-circle-xmark text-danger h3 mb-0">
+                                    </i>
+                                </td>
+
+
+                                <td vAlign="middle">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_photo}}">
+                                        <i *ngIf="data.file_photo > 0"
+                                            class="fa-solid fa-circle-down  text-success h3 mb-0"
+                                            (click)="callForPic(data.file_photo,'photo')"></i>
+                                    </a>
+
+                                    <i *ngIf="data.file_photo == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+        <mat-paginator *ngIf="_no_data" [length]="totalItems" (page)="onPageChange($event)" [pageSize]="pageSize"
+            [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
+        </mat-paginator>
+
+        <!-- <mat-paginator *ngIf="!_no_data" [length]="totalItems" (page)="onPageChange($event)" [pageSize]="pageSize"
+    [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
+</mat-paginator> -->
+
+
+        <!-- <div class="row justify-content-center mt-5">
+            <div class="col-md-2">
+                <button (click)="toolRetrivalFilter()"
+                    class="btn btn-info btn-lg px-5 text-uppercase py-2 fw-bold w-100">Search</button>
+            </div>
+        </div> -->
+
+        <div class="row mt-5 px-5">
+            <div class="col-md-4 text-center justify-content-between mx-auto d-flex">
+                <!-- <button class="btn btn-success text-white btn-lg px-5 text-uppercase py-2 fw-bold">
+                    Download
+                </button> -->
+
+                <!-- <button class="btn btn-danger btn-lg px-5 text-uppercase py-2 fw-bold">
+                    Exit
+                </button> -->
+            </div>
+        </div>
+    </form>
+</div>

@@ -1,0 +1,68 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.4);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+    cursor: not-allowed;
+}
+
+
+.img_height_class {
+    height: 100px;
+    width: auto;
+    background: #eee;
+
+}
+
+.img_height_class img {
+    height: 100%;
+    object-fit: contain;
+    width: 100%;
+}
+
+._main_container {
+    /* background-color: #eee; */
+    border: 1px solid #ccc;
+    margin-top: 5px;
+    border-radius: 5px;
+
+}
+
+.version {
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+    background-color: rgb(255, 77, 77);
+    color: #fff;
+    font-weight: 700;
+}
+
+
+._make_disable_del_file>* {
+    background-color: rgba(0, 0, 0, 0.4);
+    width: 100%;
+    z-index: 9999;
+    border-radius: 5px;
+    cursor: not-allowed;
+    color: #eee;
+}
+
+._make_disable_del_file img {
+    filter: grayscale(100%);
+    /* Applies full grayscale to the image */
+
+}
+
+._make_disable_del_file .version {
+
+    background-color: #ccc;
+    color: #000000;
+}

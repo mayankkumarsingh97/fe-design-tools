@@ -1,0 +1,190 @@
+<div class="backButtonContainer">
+</div>
+<mat-progress-bar *ngIf="progressBar" mode="indeterminate"></mat-progress-bar>
+<div class="overlay" *ngIf="progressBar">
+</div>
+
+<div class="userProfile d-flex align-items-center">
+    <div *ngIf="userData" class="user me-1 fs-5 fw-bold">
+        {{userData[0].name.slice(0,1)}}
+    </div>
+
+    <div *ngIf="!userData" class="user me-1 fs-5 fw-bold">
+        G
+    </div>
+
+    <div class="userType" ngbDropdown>
+        <div class="dropdown " ngbDropdownToggle>
+
+            <button *ngIf="!userData" class="btn dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Hello, <b>Guest</b>
+            </button>
+
+
+            <button *ngIf="userData" class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{userData[0].name}}
+            </button>
+
+
+            <ul class="dropdown-menu" ngbDropdownMenu>
+                <li><a class="dropdown-item" *ngIf="!userData" routerLink="/login">Login as Admin</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/admin-dashboard">Dashboard</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/newtcode">Add new TCode</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" (click)="_make_LocalStorage_empty()"
+                        routerLink="">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+
+
+<!-- <h3 *ngIf="progressBar">circular bar</h3> -->
+<h1 class="text-center text-uppercase fw-bold">NEW T-CODE</h1>
+<div class="container mt-3">
+    <div class="d-flex">
+        <button class="btn btn-custom btn-info p-2 text-white m-2 bg-blue" routerLink="/admin-dashboard">Dashboard</button>
+        <button class="btn btn-custom btn-yellow p-2 text-white m-2" routerLink="/tooldrawingsummary">Summary</button>
+        <button class="btn btn-custom btn-primary p-2 text-white m-2" routerLink="/existingtcode">Existing T Code</button>
+    </div>
+</div>
+<div class="container mt-3">
+    <form [formGroup]="addTcodeForm" (ngSubmit)="addTcodeFormFn()">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="">
+                    <label for="selectAggregate" class="form-label text-blue">Select Aggregate
+                        <span *ngIf="agg && agg.invalid" style="color: red;font-size: 18px;">*</span></label>
+                    <div class="dateRangePicker">
+                        <div class="multiSelectField">
+                            <mat-form-field>
+                                <mat-select [formControl]="pokemonControl" formControlName="agg" multiple>
+                                    <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name">
+                                        <mat-option *ngFor="let pokemon of group.agg" [value]="pokemon.value">
+                                            {{pokemon.viewValue}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Enter T-Code/ Description <span
+                            *ngIf="selection && selection.invalid" style="color: red;font-size: 18px;">*</span> </label>
+                    <div class="input-grp position-relative t_code_search">
+                        <ng-select bindLabel="description" class="searchable_select" (keyup)="search($event)"
+                            (change)="searchTcodesetValue($event)" formControlName="selection"
+                            aria-placeholder="Enter t code here">
+                            <ng-option *ngFor="let item of tcode_json" [value]="item" class="py-3" name="">
+                                {{ item.tcode + ' (' + item.desc + ')' }}
+                            </ng-option>
+                        </ng-select>
+
+                        <div class="input-btn bg-white border-left-0 mb-1">
+                            <button>
+                                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Description</label>
+                    <textarea readonly disabled name="" id="" cols="30" rows="8"
+                        class="form-control h-auto">{{description}}</textarea>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label for="selectAggregate" class="form-label text-blue">Upload PDF <span
+                                    *ngIf="upload_pdf_file && upload_pdf_file.invalid"
+                                    style="color: red;font-size: 18px;">*</span>
+                            </label>
+                            <div class="input-grp form-control fileField position-relative">
+                                <input type="file" (change)="onFileSelected($event, 0,'pdf')"
+                                    formControlName="upload_pdf_file" value="" id="my_upload_pdf">
+                                <label class="fileName">{{ fileNames[0] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-5">
+                            <label for="selectAggregate" class="form-label text-blue">Upload DWG.</label>
+                            <div class="input-grp form-control fileField position-relative">
+                                <input type="file" (change)="onFileSelected($event, 1,'dwg')"
+                                    formControlName="upload_dwg_file">
+                                <label class="fileName">{{ fileNames[1] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label for="selectAggregate" class="form-label text-blue">Upload 3D.</label>
+                            <div class="input-grp form-control fileField position-relative">
+                                <input type="file" (change)="onFileSelected($event, 2,'3D')"
+                                    formControlName="upload_3d_file">
+                                <label class="fileName">{{ fileNames[2] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6">
+                        <div class="mb-4">
+                            <label for="selectAggregate" class="form-label text-blue">Tool Photograph</label>
+                            <div class="input-grp form-control fileField position-relative">
+                                <input type="file" (change)="onFileSelected($event, 3,'tools_photo')" id=""
+                                    formControlName="upload_too_pic">
+                                <label class="fileName">{{ fileNames[3] }}</label>
+                                <div class="input-btn bg-white border-left-0">
+                                    <button>
+                                        <i class="fa-solid fa-cloud-arrow-up"></i>
+                                    </button>
+
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row mt-5">
+            <div class="col-md-4 text-center justify-content-between mx-auto d-flex">
+                <input type="submit" class="btn btn-success btn-lg px-5 text-uppercase py-2 fw-bold">
+                <button (click)="goBackToPrevPage()" type="reset"
+                    class="btn btn-danger btn-lg px-5 text-uppercase py-2 fw-bold">
+                    Exit
+                </button>
+            </div>
+        </div>
+    </form>
+</div>

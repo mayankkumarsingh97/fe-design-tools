@@ -1,0 +1,289 @@
+<div class="backButtonContainer">
+    <!-- <button class="backButton" (click)="goBackToPrevPage()">
+        <i class="fa-solid fa-arrow-left"></i>
+    </button> -->
+</div>
+<div class="userProfile d-flex align-items-center">
+    <div *ngIf="userData" class="user me-1 fs-5 fw-bold">
+        {{userData[0].name.slice(0,1)}}
+    </div>
+
+    <div *ngIf="!userData" class="user me-1 fs-5 fw-bold">
+        G
+    </div>
+
+
+    <div class="userType" ngbDropdown>
+        <div class="dropdown " ngbDropdownToggle>
+
+            <button *ngIf="!userData" class="btn dropdown-toggle border" type="button" data-bs-toggle="dropdown"
+                aria-expanded="false">
+                Hello, <b>Guest</b>
+            </button>
+
+
+            <button *ngIf="userData" class="btn" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                {{userData[0].name}}
+            </button>
+
+
+            <ul class="dropdown-menu" ngbDropdownMenu>
+                <li><a class="dropdown-item" *ngIf="!userData" routerLink="/login">Login as Admin</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/admin-dashboard">Dashboard</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" routerLink="/newtcode">Add new TCode</a></li>
+                <li><a class="dropdown-item" *ngIf="userData" (click)="_make_LocalStorage_empty()"
+                        routerLink="">Logout</a></li>
+
+            </ul>
+        </div>
+    </div>
+</div>
+
+<h1 class="text-center text-uppercase fw-bold">ADMIN - Existing T-CODE</h1>
+<div class="container mt-3">
+    <div class="d-flex">
+        <button class="btn btn-custom btn-info p-2 text-white m-2" routerLink="/admin-dashboard">Dashboard</button>
+        <button class="btn btn-custom btn-primary p-2 text-white m-2 bg-blue" routerLink="/newtcode">Add New T
+            Code</button>
+        <button class="btn btn-custom btn-yellow p-2 text-white m-2" routerLink="/tooldrawingsummary">Summary</button>
+    </div>
+</div>
+
+<div class="container mt-3">
+    <form>
+        <div class="row">
+            <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Enter T-Code/Description</label>
+                    <div class="input-grp position-relative t_code_search">
+                        <!-- <input type="text" class="form-control" id="searchTcode"> -->
+                        <ng-select bindLabel="description" class="searchable_select" (keyup)="search($event)"
+                            ngModel="selection" (change)="searchTcodesetValue($event)" placeholder="Enter t code">
+                            <ng-option *ngFor="let item of tcode_json" [value]="item" name="">
+                                {{ item.tcode + item.value }}
+                            </ng-option>
+                        </ng-select>
+
+                        <div class="input-btn bg-white border-left-0 mb-1">
+                            <button>
+                                <i class="fa-sharp fa-solid fa-magnifying-glass"></i>
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- <div class="col-md-4">
+                <div class="mb-3">
+                    <label for="selectPlant" class="form-label text-blue">Select Plant</label>
+                    <div class="dateRangePicker">
+                        <div class="text-black">
+                            <mat-form-field class="w-100 ">
+                                <mat-label class="text-black">Select Plant</mat-label>
+                                <mat-select [(value)]="selectedPlants" (selectionChange)="GetSelectedPlant($event)">
+                                    <mat-option *ngFor="let item of plantsList"
+                                        [value]="item.name">{{item.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+
+            <!-- <div class="col-md-6">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Select AGG.</label>
+                    <div class="dateRangePicker">
+                        <div class="multiSelectField text-black">
+                            <mat-form-field class="w-100">
+                                <mat-label class="text-black">Select AGG.</mat-label>
+                                <mat-select [(value)]="selectedAggregates"
+                                    (selectionChange)="GetSelectedDivision($event)">
+                                    <mat-option *ngFor="let item of aggregates"
+                                        [value]="item.name">{{item.name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div> -->
+
+            <div class="col-md-6">
+                <div class="">
+                    <label for="selectAggregate" class="form-label text-blue">Select Aggregate
+                    </label>
+                    <div class="dateRangePicker">
+                        <div class="multiSelectField">
+                            <!-- <mat-form-field class="w-100">
+                                <mat-select multiple formControlName="agg">
+                                    <mat-option *ngFor="let item of aggregates"
+                                        [value]="item.aggregate_id">{{item.aggregate_name}}</mat-option>
+                                </mat-select>
+                            </mat-form-field> -->
+                            <mat-form-field>
+                                <!-- <mat-label class="">Select AGG.</mat-label> -->
+                                <mat-select [formControl]="pokemonControl" formControlName="agg" multiple
+                                    (selectionChange)="GetSelectedDivision($event)">
+                                    <!-- <mat-option>-- None --</mat-option> -->
+                                    <mat-optgroup *ngFor="let group of pokemonGroups" [label]="group.name">
+                                        <mat-option *ngFor="let pokemon of group.agg" [value]="pokemon.value">
+                                            {{pokemon.viewValue}}
+                                        </mat-option>
+                                    </mat-optgroup>
+                                </mat-select>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+
+
+            <!-- <div class="col-md-3">
+                <div class="mb-3">
+                    <label for="selectAggregate" class="form-label text-blue">Filter By date</label>
+                    <div class="dateRangePicker">
+                        <mat-form-field >
+                            <mat-date-range-input  [formControl]="selectedDate" [rangePicker]="picker" >
+                                <input matStartDate (dateInput)="addEvent('input', $event)" placeholder="Start date" >
+                                <input matEndDate placeholder="End date">
+                            </mat-date-range-input>
+                            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-date-range-picker #picker ></mat-date-range-picker>
+                        </mat-form-field>
+                      
+                    </div>
+                </div>
+            </div> -->
+        </div>
+
+
+        <!-- resultContainer -->
+
+        <div class="resultContainer retrival_min_height border">
+            <div class="row">
+                <div class="col-12">
+                    <div *ngIf="_no_data" class="_no_data_errmsg"><img src="../../assets/not_found.png" alt="">
+                        &nbsp;&nbsp;&nbsp;No data found!</div>
+                    <table *ngIf="!_no_data" class="table table-bordered table-striped text-center">
+                        <thead class="bg-dark text-white text-center ">
+                            <tr class="">
+                                <!-- <th>Sno.</th> -->
+                                <!-- <th class="text-blue">Plant</th> -->
+                                <th>S.No</th>
+                                <th>Aggregate</th>
+                                <th>T-Code</th>
+                                <th>Tool Description</th>
+                                <th>.PDF</th>
+                                <th>.DRW</th>
+                                <th>3D</th>
+                                <th>Tool Photo</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody *ngFor="let data of all_data_fst_t;let i=index">
+                            <tr>
+                                <!-- <td vAlign="middle" align="center">{{data.tools_master_id}}</td> -->
+                                <!-- <td rowspan="5" vAlign="middle" align="center" class="fw-bold">
+                                    {{data.ekl_plant}}
+                                </td> -->
+
+
+                                <td rowspan="5" vAlign="middle" align="center" class="fw-bold">
+                                    {{(((currentPageIndex - 1) * pageSize) + (i+1))}}
+                                </td>
+
+                                <td vAlign="middle" class="fw-bold" style="width: 250px;">{{data.ekl_division}}</td>
+                                <td vAlign="middle" class="fw-bold">{{data.item_code}}</td>
+                                <td vAlign="middle" style="width: 300px;" class="fw-bold">{{data.item_description}}</td>
+                                <td vAlign="middle">
+
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_pdf}}" target="_blank">
+                                        <i *ngIf="data.file_pdf > 0"
+                                            class="fa-solid fa-circle-down text-success h3 mb-0"
+                                            (click)="callForPic(data.file_pdf,'pdf')">
+
+                                        </i>
+                                    </a>
+
+                                    <i *ngIf="data.file_pdf == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0">
+                                    </i>
+                                </td>
+
+
+                                <td vAlign="middle">
+
+
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_dwg}}">
+                                        <i *ngIf="data.file_dwg > 0"
+                                            class="fa-solid fa-circle-down text-success h3 mb-0"
+                                            (click)="callForPic(data.file_dwg,'dwg')">
+                                        </i>
+                                    </a>
+
+
+                                    <i *ngIf="data.file_dwg == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0"></i>
+                                </td>
+
+
+                                <td vAlign="middle">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_3d}}">
+                                        <i *ngIf="data.file_3d > 0"
+                                            class="fa-sharp fa-solid fa-circle-down text-success h3 mb-0"
+                                            (click)="callForPic(data.file_3d,'3d')"></i>
+                                    </a>
+
+
+
+                                    <i *ngIf="data.file_3d == 0" class="fa-solid fa-circle-xmark text-danger h3 mb-0">
+                                    </i>
+                                </td>
+
+
+                                <td vAlign="middle" align="center">
+                                    <a href="{{HOST}}/api/tools/file/{{data.file_photo}}">
+                                        <i *ngIf="data.file_photo > 0"
+                                            class="fa-solid fa-circle-down text-success h3 mb-0"
+                                            (click)="callForPic(data.file_photo,'photo')"></i>
+                                    </a>
+
+
+                                    <i *ngIf="data.file_photo == 0"
+                                        class="fa-sharp fa-solid fa-circle-xmark text-danger h3 mb-0"></i>
+                                </td>
+
+                                <td vAlign="middle" align="center" class="">
+                                    <button class="btn me-2">
+                                        <a [routerLink]="['/edit-t-code', data.tools_master_id]">
+
+                                            <i class="fa-solid fa-file-pen text-success"></i>
+                                        </a>
+                                    </button>
+                                    <i (click)="_confermation_Inactive(data.tools_master_id)"
+                                        class="fa fa-trash text-danger px-3" aria-hidden="true"></i>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </form>
+
+
+    <mat-paginator *ngIf="!_no_data" [length]="totalItems" (page)="onPageChange($event)" [pageSize]="pageSize"
+        [pageSizeOptions]="pageSizeOptions" aria-label="Select page">
+    </mat-paginator>
+
+
+
+
+
+
+</div>
